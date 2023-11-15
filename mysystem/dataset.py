@@ -7,9 +7,9 @@ def get_data(PATH: str) -> dict:
     '''
     预处理数据: 得到一个存储各字段数据的字典data, 其keys为字段名称(str) \n
     PATH: 存储数据的路径, 设置为本repo的路径 \n    
-    data有两个特殊字段: data['date']和data['id'], 分别为shape = (T,)和shape = (N,)的np.ndarray, 
+    data有两个特殊字段: data['date']和data['id'], 分别为shape = (T,)和shape = (N,)的pd.DataFrame, 
     表示数据的时间段和包含的股票ID \n
-    data的一般字段, 是一个shape = (T, N)的np.ndarray, 表示keys对应的字段数据, 
+    data的一般字段, 是一个shape = (T, N)的pd.DataFrame, 表示keys对应的字段数据, 
     例如data['close']表示股票的收盘价数据 \n
     注: 本系统数据基于20200101-20221231的沪深全市场股票, 于是data['date']为20200101-20221231之间的所有交易日, 
     data['id']为这段时间沪深全市场股票代码
