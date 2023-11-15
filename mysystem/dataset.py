@@ -45,11 +45,6 @@ def get_data(PATH: str) -> dict:
     amount = pd.concat([d[1].set_index('date')['amount'].rename(d[0]) for d in raw_data], axis = 1)
     data['vwap'] = (amount * cumadj)[suspend == 0] / data['volume'] # 复权, 并除去停牌和交易量为0的股票
 
-    # 转为np.ndarray
-    for item in data.keys():
-        if item not in ['date', 'id']:
-            data[item] = data[item].values
-
     return data
     
         
