@@ -12,3 +12,6 @@ class Backtest:
 
     def get_weight(self, alpha: pd.DataFrame) -> pd.DataFrame:
         return alpha / np.nansum(abs(alpha))
+    
+    def get_ic(self, alpha: pd.DataFrame):
+        return 
