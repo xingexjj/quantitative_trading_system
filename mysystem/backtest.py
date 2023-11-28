@@ -7,6 +7,9 @@ import os
 from typing import Optional
 from .dataset import get_data
 
+plt.rcParams['font.sans-serif'] = ['SimHei']
+plt.rcParams['axes.unicode_minus'] = False
+
 
 class Backtest:
     def __init__(self, PATH: str, start: str, end: str, init_cap: float = 1e8, 
@@ -119,8 +122,9 @@ class Backtest:
             weight.to_csv(os.path.join(ALPHA_PATH, f'{name}_weight.csv'))
             
         pnl = self.get_pnl(weight, init_cap)
+        pnl = pnl[start: end]
         if 'pnl' in output:
-            pnl.to_csv(os.path.join(ALPHA_PATH, f'{name}_pnl.csv'))
+            pnl.to_csv(os.path.join(ALPHA_PATH, f'{name}_PnL.csv'))
             self.plot_pnl(pnl, ALPHA_PATH, name)
 
         if 'metrics' in output:
