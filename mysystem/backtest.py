@@ -1,12 +1,13 @@
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-from IPython.display import display
+from IPython.display import display # 展示pd.DataFrame的函数
 
 import os
 from typing import Optional
 from .dataset import get_data
 
+# 设置plt负号和中文显示
 plt.rcParams['font.sans-serif'] = ['SimHei']
 plt.rcParams['axes.unicode_minus'] = False
 
