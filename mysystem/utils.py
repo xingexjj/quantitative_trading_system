@@ -16,3 +16,9 @@ def zscore(x: pd.DataFrame) -> pd.DataFrame:
     z-score标准化
     '''
     return ((x.T - x.mean(axis = 1)) / x.std(axis = 1)).T
+
+def cleanOutlier(x: pd.DataFrame) -> pd.DataFrame:
+    '''
+    去极值
+    '''
+    pass
