@@ -14,21 +14,39 @@ plt.rcParams['axes.unicode_minus'] = False
 
 
 class AlphaPool:
-    def __init__(self, PATH: str, start: str, end: str, pool: str = 'all', 
+    def __init__(self, PATH: str, start: str, end: str, pool = 'all', 
                  output: list = ['ic', 'pnl', 'metrics']) -> None:
         self.STORE_PATH = os.path.join(PATH, '../alpha/')
         self.start = start
         self.end = end
-        self.pool = pool
+        self.pool_name, self.pool = self.get_pool(pool)
         self.output = output
         self.alpha_list = {}
         self.backtest = Backtest(PATH = PATH, start = start, end = end, 
                                  pool = pool, output = output)
 
+    def get_pool(self, pool) -> Optional[pd.DataFrame]:
+        assert isinstance(pool, (str, pd.DataFrame)), 'pool should be str type or pd.DataFrame'
+        if isinstance(pool, str):
+            if pool == 'all':
+                return 'all', None
+            elif pool == 'hs300':
+                pool = pd.read_csv(os.path.join(self.PATH, 'newdata/hs300.csv'), index_col = 0)
+                pool.index = pd.to_datetime(pool.index)
+                return 'hs300', pool
+            else:
+                print(f"unsupported pool {pool}, setting pool to 'all'")
+                return 'all', None
+        
+        else:
+            assert pool.index.isin(self.ret.index).all(), 'invalid date'
+            assert pool.columns.isin(self.ret.columns).all(), 'invalid stock name'
+            return pool.index.name, pool
+
     def add_from_path(self) -> None:
         for alpha_name in os.listdir(self.STORE_PATH):
             ALPHA_PATH = os.path.join(self.STORE_PATH, alpha_name)
-            name = f'{alpha_name}_{self.start}_{self.end}_{self.pool}'
+            name = f'{alpha_name}_{self.start}_{self.end}_{self.pool_name}'
             if os.path.exists(os.path.join(ALPHA_PATH, f'{name}_alpha.csv')):
                 assert os.path.exists(os.path.join(ALPHA_PATH, f'{name}_alpha.csv')), \
                     f"missing file: metrics of alpha ({name}) in alphapool"
@@ -44,7 +62,7 @@ class AlphaPool:
             os.mkdir(ALPHA_PATH)
 
         alpha = alpha.shift(1)[self.start: self.end]
-        name = f'{alpha_name}_{self.start}_{self.end}_{self.pool}'
+        name = f'{alpha_name}_{self.start}_{self.end}_{self.pool_name}'
 
         # 计算alpha的指标
         if not os.path.exists(os.path.join(ALPHA_PATH, f'{name}_metrics.csv')):
@@ -65,7 +83,7 @@ class AlphaPool:
             os.mkdir(ALPHA_PATH)
 
         alpha = alpha.shift(1)[self.start: self.end]
-        name = f'{alpha_name}_{self.start}_{self.end}_{self.pool}'    
+        name = f'{alpha_name}_{self.start}_{self.end}_{self.pool_name}'    
         # 计算alpha的指标
         if not os.path.exists(os.path.join(ALPHA_PATH, f'{name}_metrics.csv')):
             self.backtest.backtest(alpha, alpha_name, output = ['metrics'])
