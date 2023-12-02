@@ -19,6 +19,12 @@ def zscore(x: pd.DataFrame) -> pd.DataFrame:
 
 def cleanOutlier(x: pd.DataFrame) -> pd.DataFrame:
     '''
-    去极值
+    去极值, 将极值压缩到均值 +/- 5倍标准差
     '''
-    pass
+    y = x.copy()
+    mean = x.mean(axis = 1)
+    std = x.std(axis = 1)
+    for date in y.index:
+        y.loc[date, y.loc[date] > mean.loc[date] + 5 * std.loc[date]] = mean.loc[date] + 5 * std.loc[date]
+        y.loc[date, y.loc[date] < mean.loc[date] - 5 * std.loc[date]] = mean.loc[date] - 5 * std.loc[date]
+    return y
