@@ -23,6 +23,7 @@ def get_data(PATH: str, store = True) -> dict:
         print(f'Successfully load data from {STORE_PATH}')
 
     else: # 创建新的Dataset   
+        print('Start creating dataset')
         # 读取原始股票日行情数据
         raw_data = pd.read_feather(os.path.join(PATH, '../data/stk_daily.feather'))
         raw_data = raw_data[raw_data['stk_id'].apply(lambda x: not x.endswith('BJ'))] # 去掉北交所股票

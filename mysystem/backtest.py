@@ -206,3 +206,5 @@ class Backtest:
         # 计算回测指标
         if 'metrics' in output:
             self.get_metrics(ic, pnl, ALPHA_PATH, name)
+
+        print(f'Successfully backtest alpha {alpha_name} and store results to {ALPHA_PATH}')
