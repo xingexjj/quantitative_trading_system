@@ -52,6 +52,8 @@ IC均值, ICIR, rankIC均值, rankICIR, 年化收益率, 年化波动率, 夏普
   
 `alphapool.add_from_path()`函数可以从因子池路径调取已经存在的因子.
 
+更多更加细节化的功能在`dir/quantitative_trading_system/test.ipynb`予以实现.  
+
 ## 文件说明   
 `dir/alpha/`: 用于储存因子结果的文件夹, 回测时自动创建, 在其中为每个因子创建一个文件夹, 储存回测结果.  
 `dir/data/`: 储存原始数据的文件夹, 为用户自己的本地数据.  
