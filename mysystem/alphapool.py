@@ -75,6 +75,7 @@ class AlphaPool:
                     alpha = pd.read_csv(os.path.join(ALPHA_PATH, f'{name}_alpha.csv'), index_col = 0) # 因子值
                     metrics = pd.read_csv(os.path.join(ALPHA_PATH, f'{name}_metrics.csv'), index_col = 0).T # 因子回测指标
                     self.alpha_list[alpha_name] = {'alpha': alpha, 'metrics': metrics, 'path': ALPHA_PATH}
+        print(f'Successfully add alphas from {self.STORE_PATH}')
 
     def add(self, alpha: pd.DataFrame, alpha_name: str) -> None:
         '''
@@ -103,12 +104,13 @@ class AlphaPool:
         self.alpha_list[alpha_name] = {'alpha': alpha, 'metrics': metrics, 'path': ALPHA_PATH}
         # 储存alpha
         alpha.to_csv(os.path.join(ALPHA_PATH, f'{name}_alpha.csv'))
+        print(f'Successfully add alpha {alpha_name} to {ALPHA_PATH}')
         
 
     def eval(self, alpha: pd.DataFrame, alpha_name: str, sort_index: Optional[str] = None) -> None:
         '''
         计算因子alpha与因子池中因子的相关系数, 并对比alpha与因子池中因子的回测指标
-        alpha: 需要加入的因子
+        alpha: 需要评估的新因子
         alpha_name: 因子名称
         sort_index: 回测指标排序方式,可选项有IC均值, ICIR, rankIC均值, rankICIR, 年化收益率, 年化波动率, 
         夏普比率, 胜率, 相关系数, 若为None则不排序
