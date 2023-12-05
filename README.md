@@ -23,7 +23,7 @@ from mysystem.alphapool import AlphaPool
 <div align="center">
   
 ```
-align="center" data = get_data(PATH)
+data = get_data(PATH)
 ```
 </div>
 其中`PATH`设置为本repo (`dir/quantitative_trading_system/`)的路径, 得到`data`为一个储存各字段数据的字典.    
