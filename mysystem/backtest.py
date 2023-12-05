@@ -107,8 +107,8 @@ class Backtest:
         绘制PnL曲线
         '''
         ret = pnl.pct_change()
-        ret_mean = (ret.mean().astype('float') * 252).round(4)
-        sharpe_ratio = ((ret.mean() / ret.std()).astype('float') * np.sqrt(252)).round(4)
+        ret_mean = (ret.mean() * 252).round(4)
+        sharpe_ratio = ((ret.mean() / ret.std()) * np.sqrt(252)).round(4)
         plt.figure(figsize = (8, 4))
         plt.plot(pnl)
         plt.title(f'{name}_PnL')
@@ -139,11 +139,11 @@ class Backtest:
         ic_mean = ic.mean(axis = 0).astype('float').round(4) # IC均值
         icir = (ic.mean(axis = 0) / ic.std(axis = 0)).astype('float').round(4) # ICIR
         ret = pnl.pct_change()
-        ret_mean = (ret.mean().astype('float') * 252).round(4) # 年化收益率
-        ret_std = (ret.std().astype('float') * np.sqrt(252)).round(4) # 年化波动率
-        sharpe_ratio = ((ret.mean() / ret.std()).astype('float') * np.sqrt(252)).round(4) # 夏普比率
+        ret_mean = (ret.mean() * 252).round(4) # 年化收益率
+        ret_std = (ret.std() * np.sqrt(252)).round(4) # 年化波动率
+        sharpe_ratio = ((ret.mean() / ret.std()) * np.sqrt(252)).round(4) # 夏普比率
         max_drawdown = self.max_drawdown(pnl) # 最大回撤
-        winning_rate = (ret > 0).mean().astype('float').round(4) # 胜率
+        winning_rate = (ret > 0).mean().round(4) # 胜率
         metrics = pd.DataFrame([ic_mean['IC'], icir['IC'], ic_mean['rankIC'], icir['rankIC'], 
                                 ret_mean, ret_std, sharpe_ratio, max_drawdown, winning_rate],
                                 index = ['IC均值', 'ICIR', 'rankIC均值', 'rankICIR',
