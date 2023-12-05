@@ -118,7 +118,21 @@ class Backtest:
         plt.grid()
         plt.savefig(os.path.join(ALPHA_PATH, f'{name}_PnL.jpg'))
 
-    def get_metrics(self, ic: pd.Series, pnl: pd.Series, ALPHA_PATH: str, name: str):
+    def max_drawdown(self, pnl: pd.Series) -> float:
+        '''
+        计算最大回撤
+        '''
+        pnl = pnl.values
+        max_drawdown = 0 # 记录最大回撤
+        max_value = pnl[0] # 记录目前PnL的最大值
+        for v in pnl[1:]:
+            if v > max_value:
+                max_value = v
+            else:
+                max_drawdown = max(max_drawdown, max_value - v)
+        return max_drawdown / pnl[0]
+
+    def get_metrics(self, ic: pd.Series, pnl: pd.Series, ALPHA_PATH: str, name: str) -> None:
         '''
         计算指标
         '''
@@ -128,12 +142,13 @@ class Backtest:
         ret_mean = (ret.mean().astype('float') * 252).round(4) # 年化收益率
         ret_std = (ret.std().astype('float') * np.sqrt(252)).round(4) # 年化波动率
         sharpe_ratio = ((ret.mean() / ret.std()).astype('float') * np.sqrt(252)).round(4) # 夏普比率
+        max_drawdown = self.max_drawdown(pnl) # 最大回撤
         winning_rate = (ret > 0).mean().astype('float').round(4) # 胜率
         metrics = pd.DataFrame([ic_mean['IC'], icir['IC'], ic_mean['rankIC'], icir['rankIC'], 
-                                ret_mean, ret_std, sharpe_ratio, winning_rate],
+                                ret_mean, ret_std, sharpe_ratio, max_drawdown, winning_rate],
                                 index = ['IC均值', 'ICIR', 'rankIC均值', 'rankICIR',
                                          '年化收益率', '年化波动率', '夏普比率', 
-                                         '胜率'],
+                                         '最大回撤', '胜率'],
                                 columns = [name.split('_')[0]])
         metrics.to_csv(os.path.join(ALPHA_PATH, f'{name}_metrics.csv'))
         display(metrics) # 展示指标DataFrame
@@ -180,6 +195,8 @@ class Backtest:
             alpha = alpha[pool == 1] # 资产池内股票的因子值
         alpha = alpha.shift(1).loc[start: end] # 回测期间内股票的因子值
         name = f'{alpha_name}_{start}_{end}_{pool_name}'
+
+        print(f'Start backtesting alpha {alpha_name}')
 
         # 计算IC, rankIC
         ic = self.get_ic(alpha)

@@ -113,7 +113,7 @@ class AlphaPool:
         alpha: 需要评估的新因子
         alpha_name: 因子名称
         sort_index: 回测指标排序方式,可选项有IC均值, ICIR, rankIC均值, rankICIR, 年化收益率, 年化波动率, 
-        夏普比率, 胜率, 相关系数, 若为None则不排序
+        夏普比率, 最大回撤, 胜率, 相关系数, 若为None则不排序
         '''
         # 检查, 创建储存因子的路径
         if not os.path.exists(self.STORE_PATH):
