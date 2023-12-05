@@ -21,7 +21,7 @@ from mysystem.alphapool import AlphaPool
   
 使用`get_data`函数读取数据:   
 <div align="center">
-`data = get_data(PATH)`  
+data = get_data(PATH)
 </div>
 其中`PATH`设置为本repo (`dir/quantitative_trading_system/`)的路径, 得到`data`为一个储存各字段数据的字典.  
   
@@ -53,7 +53,7 @@ from mysystem.alphapool import AlphaPool
 将5日反转因子加入因子池`alphapool`:  
 <div align="center">
 `alphapool.add(ret5d, 'ret5d')`  
-<div align="center">
+</div>
 会将5日反转因子每个交易日的因子值储存在`dir/alpha/ret5d`中, 文件名包含了回测区间和资产池.  
   
 当因子池中有一些因子后, 我们可以使用函数  
