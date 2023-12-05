@@ -20,6 +20,7 @@ def get_data(PATH: str, store = True) -> dict:
     if store and os.path.exists(STORE_PATH): # 若Dataset文件存在且选择读取, 则直接读取数据
         with open(STORE_PATH, 'rb') as f:
             data = pickle.load(f)
+        print(f'Successfully load data from {STORE_PATH}')
 
     else: # 创建新的Dataset   
         # 读取原始股票日行情数据
@@ -59,6 +60,9 @@ def get_data(PATH: str, store = True) -> dict:
                 os.mkdir(STORE_FOLDER)
             with open(STORE_PATH, 'wb') as f:
                 pickle.dump(data, f)
+            print(f'Successfully create dataset in {STORE_PATH}')
+        else:
+            print('Successfully create dataset')
 
     return data
     
